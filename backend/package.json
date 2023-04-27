@@ -1,0 +1,19 @@
+{
+  "name": "projeto-clinica-estacio",
+  "version": "1.0.0",
+  "description": "Projeto Clinica de Acupuntura",
+  "main": "server.js",
+  "type": "module",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.0.5",
+    "nodemon": "^2.0.22"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "dev": "nodemon serve.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
