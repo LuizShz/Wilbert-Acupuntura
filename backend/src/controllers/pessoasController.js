@@ -5,7 +5,7 @@ class PessoaController {
 
     static listarPessoas = async (req, res) => {
         try {
-            const pessoasResponse = await pessoas.find();
+            const pessoasResponse = await pessoas.find({}, 'nome');
             res.status(200).json(pessoasResponse);
         } catch (err) {
             res.status(500).send({message: `${err.message} - Erro ao carregar pessoa`})
@@ -17,7 +17,7 @@ class PessoaController {
             const pessoaResponse = await pessoas.findById(id);
             res.status(200).json(pessoaResponse);
         } catch (err) {
-            res.status(400).send({message: `${err.message} - Id do pessoa não localizado`})
+            res.status(400).send({message: `${err.message} - Id da pessoa não localizado`})
         }
     }
     static cadastrarPessoa = async (req, res) => {      
@@ -47,6 +47,54 @@ class PessoaController {
             res.status(500).send({message: err.message})
         }
     }
+    
+    static listarPessoaNome = async (req, res) => {
+        try {
+            const nome = new RegExp(req.params.nome, 'i');
+            const pessoasResponse = await pessoas.find({nome}).exec();
+            res.status(200).json(pessoasResponse);
+        } catch (err) {
+            res.status(400).send({message: `${err.message} - Id da pessoa não localizado`})
+        }
+    }
+    
+    static totalPessoasCadastradas = async (req, res) => {
+        try {
+            const totalResponse = await pessoas.countDocuments();
+            res.status(200).json({total: totalResponse});
+        } catch (err) {
+            console.log(error);
+            res.status(500).send({message: `${err.message} - Erro ao obter o total de pessoas.`})
+        }
+    }
+
+    static totalConsultasUltimosSeteDias = async (req, res) => {
+        try {
+          const hoje = new Date();
+          const seteDiasAtras = new Date();
+          seteDiasAtras.setDate(hoje.getDate() - 7);
+          const total = await pessoas.aggregate([
+            {
+              $unwind: "$consultas"
+            },
+            {
+              $match: {
+                "consultas.dataConsulta": {
+                  $gte: seteDiasAtras,
+                  $lte: hoje
+                }
+              }
+            },
+            {
+              $count: "total"
+            }
+          ]);
+          res.json({ total: total[0].total });
+        } catch (error) {
+          console.log(error);
+          res.status(500).json({ message: "Erro ao obter o total de consultas." });
+        }
+      };
 }
 
 export default PessoaController

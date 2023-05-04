@@ -12,10 +12,28 @@ const pessoaSchema = new mongoose.Schema(
         // religiao: {type: Number}, não vai precisar
         dataNascimento: {type: Date},
         // idade: {type: Number}, fazer o calc com base na data de nascimento
-        primeiraSessao: {type: Boolean}
+        primeiraSessao: {type: Boolean},
+        consultas: [{
+            id: {type: String},
+            dataConsulta: {type: Date, required: true},
+            queixaPrincipal: {type: String, required: true},
+            interrogatorio: {type: String},
+            cirurgia: {type: String},
+            medicacaoUso: {type: String},
+            auriculo: {type: String},
+            pulsoDireito: {type: String},
+            pulsoEsquerdo: {type: String},
+            lingua: {type: String},
+            localizacaoDoenca: {type: String},
+            naturezaDoenca: {type: String},
+            etiopatogenia: {type: String},
+            sindrome: {type: String},
+            principioTerapeutico: {type: String},
+            prescicao: {type: String}
+        }]
     }
 );
 
-const pessoas = mongoose.model('pessoa', pessoaSchema);
+const pessoas = mongoose.model('pessoas', pessoaSchema);
 
 export default pessoas;
