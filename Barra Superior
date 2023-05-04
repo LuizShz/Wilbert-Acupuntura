@@ -1,0 +1,80 @@
+import { StatusBar } from 'expo-status-bar';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+
+export default function MinhaTela() {
+  const [searchVisible, setSearchVisible] = useState(false);
+  const toggleSearch = () => setSearchVisible(!searchVisible);
+
+  return (
+    <View>
+      <View style={styles.header}>
+        {searchVisible ? (
+          <View style={styles.searchContainer}>
+            <TextInput 
+              placeholder="Pesquisar por nome ou CPF"
+              style={styles.searchInput}
+            />
+          </View>
+        ) : null}
+        <TouchableOpacity 
+          style={styles.addButton}
+          onPress={() => console.log('Criar nova consulta')}>
+          <Text style={styles.addButtonText}>Nova Consulta</Text>
+        </TouchableOpacity>
+        <TouchableOpacity 
+          style={styles.searchButton}
+          onPress={toggleSearch}>
+          <Text style={styles.searchButtonText}>{searchVisible ? 'Fechar' : 'Pesquisar'}</Text>
+        </TouchableOpacity>
+      </View>
+      {/* restante da tela aqui */}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    justifyContent: 'space-between', 
+    backgroundColor: 'white', 
+    padding: 5,
+    paddingRight: 20,
+    height: 60,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc'
+  },
+  addButton: {
+    backgroundColor: '#007AFF', 
+    padding: 10, 
+    borderRadius: 5 
+  },
+  addButtonText: {
+    color: 'white', 
+    fontWeight: 'bold'
+  },
+  searchButton: {
+    backgroundColor: 'white', 
+    padding: 10, 
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#ccc'
+  },
+  searchButtonText: {
+    color: '#007AFF', 
+    fontWeight: 'bold'
+  },
+  searchContainer: {
+    flex: 1, 
+    height: 40, 
+    borderWidth: 1, 
+    borderRadius: 5, 
+    marginRight: 10, 
+    paddingLeft: 10
+  },
+  searchInput: {
+    flex: 1, 
+    height: 40,
+  }
+});
