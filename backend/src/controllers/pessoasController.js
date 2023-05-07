@@ -70,31 +70,40 @@ class PessoaController {
 
     static totalConsultasUltimosSeteDias = async (req, res) => {
         try {
-          const hoje = new Date();
-          const seteDiasAtras = new Date();
-          seteDiasAtras.setDate(hoje.getDate() - 7);
-          const total = await pessoas.aggregate([
-            {
-              $unwind: "$consultas"
-            },
-            {
-              $match: {
-                "consultas.dataConsulta": {
-                  $gte: seteDiasAtras,
-                  $lte: hoje
+            const hoje = new Date();
+            const seteDiasAtras = new Date();
+            seteDiasAtras.setDate(hoje.getDate() - 7);
+            const mesAtual = hoje.getMonth() + 1;
+            const anoAtual = hoje.getFullYear();
+            const mesSeteDiasAtras = seteDiasAtras.getMonth() + 1;
+            const anoSeteDiasAtras = seteDiasAtras.getFullYear();
+            const total = await pessoas.aggregate([
+                {
+                    $unwind: "$consultas"
+                },
+                {
+                    $match: {
+                        "consultas.dataConsulta": {
+                            $gte: seteDiasAtras,
+                            $lte: hoje
+                        },
+                        "consultas.dataConsulta": {
+                            $gte: new Date(anoSeteDiasAtras, mesSeteDiasAtras - 1, seteDiasAtras.getDate()),
+                            $lte: new Date(anoAtual, mesAtual - 1, hoje.getDate())
+                        }
+                    }
+                },
+                {
+                    $count: "total"
                 }
-              }
-            },
-            {
-              $count: "total"
-            }
-          ]);
-          res.json({ total: total[0].total });
+            ]);
+            res.json({ total: total[0].total });
         } catch (error) {
-          console.log(error);
-          res.status(500).json({ message: "Erro ao obter o total de consultas." });
+            console.log(error);
+            res.status(500).json({ message: "Erro ao obter o total de consultas." });
         }
-      };
+    };
+    
 }
 
 export default PessoaController
