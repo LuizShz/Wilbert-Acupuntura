@@ -15,10 +15,8 @@ import { Picker } from "@react-native-picker/picker";
 import Constants from "expo-constants";
 import RadioGroup from "react-native-radio-buttons-group";
 
-
-
 export default Cadastro = ({ navigation }) => {
-  const radioSexo = useMemo(() => ([
+  const radioGenero = useMemo(() => ([
     {
       id: "1",
       label: "Masculino",
@@ -43,7 +41,7 @@ export default Cadastro = ({ navigation }) => {
     },
   ]), []);
 
-  const [sexo, setSexo] = useState ();
+  const [genero, setGenero] = useState ();
 
   const radioEstadoCivil = useMemo(() => ([
     {
@@ -87,7 +85,7 @@ export default Cadastro = ({ navigation }) => {
   
   function handleSubmit (){
     const data = JSON.stringify({
-      nome, endereco, telefone, sexo, escolaridade, estadoCivil, profissao, qntdFilhos, religiao, dataNascimento, idade
+      nome, endereco, telefone, genero, escolaridade, estadoCivil, profissao, qntdFilhos, religiao, dataNascimento, idade
     });
     alert(data)
   }
@@ -129,8 +127,8 @@ export default Cadastro = ({ navigation }) => {
           defaultValue={telefone}
           />
 
-          <Text>Sexo:</Text>
-          <RadioGroup radioButtons={radioSexo} onPress={setSexo} selectedId={sexo} />
+          <Text>Genero:</Text>
+          <RadioGroup radioButtons={radioGenero} onPress={setGenero} selectedId={genero} />
 
           <Text for="escolaridade">Escolaridade:</Text>
           <TextInput style={styles.input} 
@@ -174,8 +172,7 @@ export default Cadastro = ({ navigation }) => {
             style={styles.input}
             mask="99/99/9999"
             onChangeText={(text, rawText) => {
-              console.log(text);
-              console.log(rawText);
+            setDataNascimento(text);
             }}
           />
 
@@ -198,12 +195,12 @@ export default Cadastro = ({ navigation }) => {
 
             <Pressable
               style={styles.button}
-              onPress={() => navigation.navigate("FichaAmnese")}
+              onPress={() => navigation.navigate("DescricaoAnamnese")}
             >
-              <Text>Ficha Amnese</Text>
+              <Text>Descrição Amnese</Text>
             </Pressable>
 
-            <Pressable style={styles.button} onPress={handleSubmit}>
+            <Pressable style={[styles.button, styles.colorSaveButton]} onPress={handleSubmit}>
               <Text>Salvar</Text>
             </Pressable>
           </View>
@@ -216,11 +213,16 @@ export default Cadastro = ({ navigation }) => {
 const styles = StyleSheet.create({
   button: {
     width: "auto",
-    paddingVertical: 16,
+    paddingVertical: 12,
     paddingHorizontal: 16,
-    borderRadius: 20,
+    borderRadius: 5,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#e1e6df",
+    marginTop: 30,
+  },
+
+  colorSaveButton: {
     backgroundColor: "#bdd0b4",
   },
 
@@ -244,6 +246,7 @@ const styles = StyleSheet.create({
 
   container: {
     marginHorizontal: 30,
+    marginVertical: 30,
   },
 
 });

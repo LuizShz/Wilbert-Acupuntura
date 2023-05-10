@@ -2,7 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import Cadastro from "../pages/SignUp";
-import FichaAnamnese from "../pages/FichaAnamnese";
+import DescricaoAnamnese from "../pages/DescricaoAnamnese";
 import Welcome from "../pages/Inicial";
 import Pacientes from "../pages/Pacientes";
 
@@ -16,7 +16,7 @@ export const AppStack = () => {
 
         <Stack.Screen name="Cadastro" component={Cadastro} options={{ title: 'Cadastro Paciente'}} />
 
-        <Stack.Screen name="FichaAnamnese" component={FichaAnamnese} options={{ title: 'Ficha Anamnese'}} />
+        <Stack.Screen name="DescricaoAnamnese" component={DescricaoAnamnese} options={{ title: 'Descrição Anamnese'}} />
 
         <Stack.Screen name="Pacientes" component={Pacientes} options={{ title: 'Lista de Pacientes'}} />
 
