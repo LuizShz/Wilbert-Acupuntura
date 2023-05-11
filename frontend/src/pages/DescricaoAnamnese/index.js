@@ -114,7 +114,7 @@ export default DescricaoAnamnese = ({ navigation }) => {
             style={styles.input}
             multiline={true}
             numberOfLines={6}
-            placeholder="Digite seu texto"
+            placeholder="Observação"
             onChangeText={(newObservacao) => setObservacao(newObservacao)}
             defaultValue={observacao}
           />
@@ -124,7 +124,7 @@ export default DescricaoAnamnese = ({ navigation }) => {
             style={styles.input}
             multiline={true}
             numberOfLines={6}
-            placeholder="Digite seu texto"
+            placeholder="Interrogatório"
             onChangeText={(newInterrogatorio) =>
               setInterrogatorio(newInterrogatorio)
             }
@@ -158,7 +158,7 @@ export default DescricaoAnamnese = ({ navigation }) => {
             style={styles.input}
             multiline={true}
             numberOfLines={3}
-            placeholder="Digite seu texto"
+            placeholder="Síndrome"
             onChangeText={(newBianZhen) => setBianZhen(newBianZhen)}
             defaultValue={bianZhen}
           />
@@ -168,7 +168,7 @@ export default DescricaoAnamnese = ({ navigation }) => {
             style={styles.input}
             multiline={true}
             numberOfLines={3}
-            placeholder="Digite seu texto"
+            placeholder="Princípio Terapêutico"
             onChangeText={(newLunZhi) => setLunZhi(newLunZhi)}
             defaultValue={lunZhi}
           />
@@ -178,7 +178,7 @@ export default DescricaoAnamnese = ({ navigation }) => {
             style={styles.input}
             multiline={true}
             numberOfLines={3}
-            placeholder="Digite seu texto"
+            placeholder="Prescrição"
             onChangeText={(newPrescricao) => setPrescricao(newPrescricao)}
             defaultValue={prescricao}
           />
@@ -188,7 +188,7 @@ export default DescricaoAnamnese = ({ navigation }) => {
             style={styles.input}
             multiline={true}
             numberOfLines={3}
-            placeholder="Digite seu texto"
+            placeholder="Cirurgia"
             onChangeText={(newCirurgia) => setCirurgia(newCirurgia)}
             defaultValue={cirurgia}
           />
@@ -198,7 +198,7 @@ export default DescricaoAnamnese = ({ navigation }) => {
             style={styles.input}
             multiline={true}
             numberOfLines={3}
-            placeholder="Digite seu texto"
+            placeholder="Medicação em uso"
             onChangeText={(newMedicacao) => setMedicacao(newMedicacao)}
             defaultValue={medicacao}
           />
@@ -208,7 +208,7 @@ export default DescricaoAnamnese = ({ navigation }) => {
             style={styles.input}
             multiline={true}
             numberOfLines={3}
-            placeholder="Digite seu texto"
+            placeholder="Auriculo"
             onChangeText={(newAuriculo) => setAuriculo(newAuriculo)}
             defaultValue={auriculo}
           />
@@ -240,7 +240,7 @@ export default DescricaoAnamnese = ({ navigation }) => {
             style={styles.input}
             multiline={true}
             numberOfLines={3}
-            placeholder="Digite seu texto"
+            placeholder="Língua"
             onChangeText={(newLingua) => setLingua(newLingua)}
             defaultValue={lingua}
           />

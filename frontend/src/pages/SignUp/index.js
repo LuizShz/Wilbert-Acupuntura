@@ -171,6 +171,7 @@ export default Cadastro = ({ navigation }) => {
           <MaskedTextInput
             style={styles.input}
             mask="99/99/9999"
+            placeholder="DD/MM/AAAA"
             onChangeText={(text, rawText) => {
             setDataNascimento(text);
             }}
