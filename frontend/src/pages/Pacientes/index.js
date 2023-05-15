@@ -16,7 +16,7 @@ export default Pacientes = ({ navigation }) => {
     },
 
     {
-      nome: "Karolina",
+      nome: "Karoline",
       id: 2,
     },
 
@@ -34,6 +34,11 @@ export default Pacientes = ({ navigation }) => {
       nome: "Cristian",
       id: 5,
     },
+
+    {
+      nome: "Deusvaldo",
+      id: 6,
+    }
   ];
 
   const listaAlfabetica = listaDePacientes.sort(function (a, b) {

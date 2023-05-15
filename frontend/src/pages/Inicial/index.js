@@ -21,7 +21,7 @@ const Welcome = ({ navigation }) => {
     },
 
     {
-      nome: "Karolina",
+      nome: "Karoline",
       horario: "14:00",
       id: 2,
     },
@@ -43,6 +43,12 @@ const Welcome = ({ navigation }) => {
       horario: "18:00",
       id: 5,
     },
+
+    {
+      nome: "Deusvaldo",
+      horario: "14:30",
+      id: 6,
+    }
   ];
 
   const listaAlfabetica = listaDePacientes.sort(function (a, b) {
