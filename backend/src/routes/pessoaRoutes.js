@@ -6,8 +6,7 @@ const router = express.Router();
 
 router
     .get("/pessoas", PessoaController.listarPessoas)
-    .get("/pessoas/total", PessoaController.totalPessoasCadastradas)
-    .get("/pessoas/totalConsultas", PessoaController.totalConsultasUltimosSeteDias)
+    .get("/pessoas/dashboard", PessoaController.registrosDashboard)
     .get("/pessoas/:id", PessoaController.listarPessoaId)
     .get("/pessoas/pesquisa/:nome", PessoaController.listarPessoaNome)
     .post("/pessoas", PessoaController.cadastrarPessoa)

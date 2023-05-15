@@ -57,53 +57,30 @@ class PessoaController {
             res.status(400).send({message: `${err.message} - Id da pessoa não localizado`})
         }
     }
-    
-    static totalPessoasCadastradas = async (req, res) => {
+
+    static registrosDashboard = async (req, res) => {
         try {
-            const totalResponse = await pessoas.countDocuments();
-            res.status(200).json({total: totalResponse});
+            // Total de pessoas
+            var totalPessoas = await pessoas.countDocuments();
+            
+            const today = new Date();
+            // Total de consultas nos últimos 7 dias
+            const seteDiasAtras = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+            var consultasSeteDias = await pessoas.countDocuments({
+                'consultas.dataConsulta': { $gte: seteDiasAtras, $lte: today },
+            });
+
+            // Total de consultas no último mês
+            const primeiroDiaMes = new Date(today.getFullYear(), today.getMonth(), 1);
+            var consultasMesAtual = await pessoas.countDocuments({
+                'consultas.dataConsulta': { $gte: primeiroDiaMes, $lte: today },
+            });
+
+            res.status(200).json({totalPessoas, consultasSeteDias, consultasMesAtual});
         } catch (err) {
-            console.log(error);
-            res.status(500).send({message: `${err.message} - Erro ao obter o total de pessoas.`})
+            res.status(500).send({message: `${err.message} - Erro ao obter a dashboard.`})
         }
     }
-
-    static totalConsultasUltimosSeteDias = async (req, res) => {
-        try {
-            const hoje = new Date();
-            const seteDiasAtras = new Date();
-            seteDiasAtras.setDate(hoje.getDate() - 7);
-            const mesAtual = hoje.getMonth() + 1;
-            const anoAtual = hoje.getFullYear();
-            const mesSeteDiasAtras = seteDiasAtras.getMonth() + 1;
-            const anoSeteDiasAtras = seteDiasAtras.getFullYear();
-            const total = await pessoas.aggregate([
-                {
-                    $unwind: "$consultas"
-                },
-                {
-                    $match: {
-                        "consultas.dataConsulta": {
-                            $gte: seteDiasAtras,
-                            $lte: hoje
-                        },
-                        "consultas.dataConsulta": {
-                            $gte: new Date(anoSeteDiasAtras, mesSeteDiasAtras - 1, seteDiasAtras.getDate()),
-                            $lte: new Date(anoAtual, mesAtual - 1, hoje.getDate())
-                        }
-                    }
-                },
-                {
-                    $count: "total"
-                }
-            ]);
-            res.json({ total: total[0].total });
-        } catch (error) {
-            console.log(error);
-            res.status(500).json({ message: "Erro ao obter o total de consultas." });
-        }
-    };
-    
 }
 
 export default PessoaController
