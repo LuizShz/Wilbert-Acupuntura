@@ -1,4 +1,4 @@
-// FAZ O CONTROLE DOQ VAI SER RETORNADO DO BANCO
+import _ from 'lodash';
 import pessoas from '../models/Pessoa.js';
 
 class PessoaController {
@@ -20,22 +20,28 @@ class PessoaController {
             res.status(400).send({message: `${err.message} - Id da pessoa não localizado`})
         }
     }
-    static cadastrarPessoa = async (req, res) => {      
+    static cadastrarPessoa = async (req, res) => {
         try {
-            const pessoa = new pessoas(req.body)
+            const pessoaData = _.cloneDeep(req.body);
+            delete pessoaData.consultas; // Remover o campo 'consultas' do objeto clonado
+
+            const pessoa = new pessoas(pessoaData);
             await pessoa.save();
-            res.status(201).send({message: `Pessoa cadastrada com sucesso !`})
+            res.status(201).send({ message: 'Pessoa cadastrada com sucesso!' });
         } catch (err) {
-            res.status(500).send({message: `${err.message} - falha ao cadastrar pessoa. `});
+            res.status(500).send({ message: `${err.message} - Falha ao cadastrar pessoa.` });
         }
     }
     static atualizarPessoa = async (req, res) => {
         try {
             const id = req.params.id;
-            await pessoas.findByIdAndUpdate(id, {$set: req.body})
-            res.status(500).send({message: err.message})
+            const pessoaData = _.cloneDeep(req.body);
+            delete pessoaData.consultas; // Remover o campo 'consultas' do objeto clonado
+
+            await pessoas.findByIdAndUpdate(id, { $set: pessoaData });
+            res.status(200).send({ message: 'Pessoa atualizada com sucesso!' });
         } catch (err) {
-            res.status(200).send({message: 'Pessoa atualizado com sucesso'})
+            res.status(500).send({ message: err.message });
         }
     }
     static excluirPessoa = async (req, res) => {
@@ -75,8 +81,12 @@ class PessoaController {
             var consultasMesAtual = await pessoas.countDocuments({
                 'consultas.dataConsulta': { $gte: primeiroDiaMes, $lte: today },
             });
+            // lista de consultas na data atual
+            const consultasHoje = await pessoas.find({
+                'consultas.dataConsulta': { $gte: today, $lte: today },
+            });
 
-            res.status(200).json({totalPessoas, consultasSeteDias, consultasMesAtual});
+            res.status(200).json({totalPessoas, consultasSeteDias, consultasMesAtual, consultasHoje});
         } catch (err) {
             res.status(500).send({message: `${err.message} - Erro ao obter a dashboard.`})
         }
