@@ -5,6 +5,9 @@ import Cadastro from "../pages/SignUp";
 import DescricaoAnamnese from "../pages/DescricaoAnamnese";
 import Welcome from "../pages/Inicial";
 import Pacientes from "../pages/Pacientes";
+import DadosPaciente from "../pages/DadosPaciente";
+import EditarPaciente from "../pages/EditarPaciente";
+import EditarFichaAnamnese from "../pages/EditarFichaAnamnese";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,6 +22,12 @@ export const AppStack = () => {
         <Stack.Screen name="DescricaoAnamnese" component={DescricaoAnamnese} options={{ title: 'Descrição Anamnese'}} />
 
         <Stack.Screen name="Pacientes" component={Pacientes} options={{ title: 'Lista de Pacientes'}} />
+
+        <Stack.Screen name="DadosPaciente" component={DadosPaciente} options={{ title: 'Dados do Paciente'}} />
+
+        <Stack.Screen name="EditarPaciente" component={EditarPaciente} options={{ title: 'Editar Paciente'}} />
+
+        <Stack.Screen name="EditarFichaAnamnese" component={EditarFichaAnamnese} options={{ title: 'Editar Ficha Anamnese'}} />
 
       </Stack.Navigator>
     </NavigationContainer>

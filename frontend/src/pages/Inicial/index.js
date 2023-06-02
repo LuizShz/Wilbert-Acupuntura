@@ -1,8 +1,7 @@
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   StyleSheet,
-  Image,
   Pressable,
   SafeAreaView,
   Text,
@@ -11,68 +10,50 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
+import axios from "axios";
 
 const Welcome = ({ navigation }) => {
-  const listaDePacientes = [
-    {
-      nome: "Igor",
-      horario: "15:00",
-      id: 1,
-    },
 
-    {
-      nome: "Karoline",
-      horario: "14:00",
-      id: 2,
-    },
+  const [listaDePacientes, setListaDePacientes] = useState([]);
 
-    {
-      nome: "Luiz",
-      horario: "13:00",
-      id: 3,
-    },
-
-    {
-      nome: "Duda",
-      horario: "10:00",
-      id: 4,
-    },
-
-    {
-      nome: "Cristian",
-      horario: "18:00",
-      id: 5,
-    },
-
-    {
-      nome: "Deusvaldo",
-      horario: "14:30",
-      id: 6,
+    const fetchPost = async () =>{
+      try{
+      let result = await axios.get(
+        "http://192.168.0.19:3000/pessoas"
+      )
+      setListaDePacientes(result.data)
+    } 
+    catch(error) {
+      console.error(error);
     }
-  ];
+  }
 
-  const listaAlfabetica = listaDePacientes.sort(function (a, b) {
-    if (a.horario < b.horario) {
-      return -1;
-    }
-    if (a.horario > b.horario) {
-      return 1;
-    }
-    return 0;
-  });
+  useEffect( () => {
+    fetchPost();
+}, [])
 
   const [pacientesPesquisar, setPacientesPesquisar] = useState("");
 
   const pesquisaPaciente = (text) => {
-    const newData = listaAlfabetica.filter(
-      (filtro) => text.toUpperCase() == filtro?.nome.toUpperCase()
+    const newData = listaDePacientes.filter(
+      (filtro) => text.toUpperCase().trim() == filtro?.nome.toUpperCase().trim()
     );
     if (newData && newData[0]?.nome) {
-      alert(newData[0]?.nome);
+      navigation.navigate("DadosPaciente",{id: newData[0]._id})
     } else {
       alert("Panciente Inexistente.");
     }
   };
+
+  const listaAlfabetica = listaDePacientes.sort(function (a, b) {
+    if (a.nome < b.nome) {
+      return -1;
+    }
+    if (a.nome > b.nome) {
+      return 1;
+    }
+    return 0;
+  });
 
   return (
     <ImageBackground
@@ -115,13 +96,6 @@ const Welcome = ({ navigation }) => {
 
               <Pressable
                 style={styles.butonInicial}
-                onPress={() => navigation.navigate("DescricaoAnamnese")}
-              >
-                <Text>Descrição Anamnese</Text>
-              </Pressable>
-
-              <Pressable
-                style={styles.butonInicial}
                 onPress={() => navigation.navigate("Pacientes")}
               >
                 <Text>Pacientes</Text>
@@ -132,10 +106,9 @@ const Welcome = ({ navigation }) => {
           <View>
             <View style={styles.pacientes}>
               <Text style={styles.pacientetxt}> Pacientes: </Text>
-              {listaAlfabetica.map((paciente) => (
-                <View key={paciente.id} style={styles.pacientesContainer}>
-                  <Text style={styles.nome}> {paciente.nome} </Text>
-                  <Text> {paciente.horario} </Text>
+              {listaAlfabetica.map((paciente, index) => (
+                <View key={index} style={styles.pacientesContainer}>
+                  <Text style={styles.nome}> {paciente.nome}</Text>
                 </View>
               ))}
             </View>

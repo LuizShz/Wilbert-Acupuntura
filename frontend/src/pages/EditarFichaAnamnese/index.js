@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -14,10 +14,16 @@ import { MaskedTextInput } from "react-native-mask-text";
 import { Picker } from "@react-native-picker/picker";
 import { useRoute } from '@react-navigation/native';
 import axios from "axios";
+import moment from "moment";
 
-export default DescricaoAnamnese = ({ navigation }) => {
+export default EditarFichaAnamnese = ({ navigation }) => {
+
+  const route = useRoute();
+  const { id } = route.params;
+  const [dadosConsulta, setDadosConsulta] = useState([]);
+
   const [dataConsulta, setDataConsulta] = useState("");
-  const [acunpuntura, setAcunpuntura] = useState();
+  const [acunpuntura, setAcunpuntura] = useState("");
   const [horaConsulta, setHoraConsulta] = useState("");
   const [queixaPrincipal, setQueixaPrincipal] = useState("");
   const [interrogatorio, setInterrogatorio] = useState("");
@@ -34,33 +40,41 @@ export default DescricaoAnamnese = ({ navigation }) => {
   const [lingua, setLingua] = useState("");
   const [etiopatogenia, setEtiopatogenia] = useState("");
 
-  const route = useRoute();
-  const { id } = route.params;
+  const fetchPost = async () => {
+    try {
+      let result = await axios.get(`http://192.168.0.19:3000/pessoas/${id}/consultas`);
+      setDadosConsulta(result.data[0]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    fetchPost();
+  }, []);
 
   const handleSubmit = async ()  => {
     try{
-      await axios.post(
-        `http://192.168.0.19:3000/pessoas/${id}/consultas`, {
-          dataConsulta,
-          horaConsulta,
-          acunpuntura,
-          queixaPrincipal,
-          interrogatorio,
-          localizacaoDoenca,
-          naturezaDoenca,
-          sindrome,
-          principioTerapeutico,
-          prescricao,
-          cirurgia,
-          medicacaoUso,
-          auriculo,
-          pulsoDireito,
-          pulsoEsquerdo,
-          lingua,
-          etiopatogenia,
-        },
-      )
-      alert("Paciente Cadastrado com Sucesso!");
+      await axios.put(
+        `http://192.168.0.19:3000/pessoas/${id}/consultas/${idConsulta}`, {
+          dataConsulta: !dataConsulta ? dadosConsulta.dataConsulta : dataConsulta,
+          horaConsulta: !horaConsulta ? dadosConsulta.horaConsulta : horaConsulta,
+          acunpuntura: !acunpuntura ? dadosConsulta.acunpuntura : acunpuntura,
+          queixaPrincipal: !queixaPrincipal ? dadosConsulta.queixaPrincipal : queixaPrincipal,
+          interrogatorio: !interrogatorio ? dadosConsulta.interrogatorio : interrogatorio,
+          localizacaoDoenca: !localizacaoDoenca ? dadosConsulta.localizacaoDoenca : localizacaoDoenca,
+          naturezaDoenca: !naturezaDoenca ? dadosConsulta.naturezaDoenca : naturezaDoenca,
+          sindrome: !sindrome ? dadosConsulta.sindrome : sindrome,
+          principioTerapeutico: !principioTerapeutico ? dadosConsulta.principioTerapeutico : principioTerapeutico,
+          prescricao: !prescricao ? dadosConsulta.prescricao : prescricao,
+          cirurgia: !cirurgia ? dadosConsulta.cirurgia : cirurgia,
+          medicacaoUso: !medicacaoUso ? dadosConsulta.medicacaoUso : medicacaoUso,
+          auriculo: !auriculo ? dadosConsulta.auriculo : auriculo,
+          pulsoDireito: !pulsoDireito ? dadosConsulta.pulsoDireito : pulsoDireito,
+          pulsoEsquerdo: !pulsoEsquerdo ? dadosConsulta.pulsoEsquerdo : pulsoEsquerdo,
+          lingua: !lingua ? dadosConsulta.lingua : lingua,
+          etiopatogenia: !etiopatogenia ? dadosConsulta.etiopatogenia : etiopatogenia,
+        },)
+      alert("Ficha Editada com Sucesso!");
     } 
     catch(error) {
       console.error(error);
@@ -80,6 +94,7 @@ export default DescricaoAnamnese = ({ navigation }) => {
             style={styles.input}
             mask="99/99/9999"
             placeholder="DD/MM/AAAA"
+            defaultValue={moment(dadosConsulta.dataConsulta).format("DD/MM/YYYY")}
             onChangeText={(text, rawText) => {
               setDataConsulta(text);
             }}
@@ -90,6 +105,7 @@ export default DescricaoAnamnese = ({ navigation }) => {
             style={styles.input}
             mask="99:99"
             placeholder="HH:MM"
+            defaultValue={dadosConsulta.horaConsulta}
             onChangeText={(text, rawText) => {
               setHoraConsulta(text);
             }}
@@ -114,7 +130,7 @@ export default DescricaoAnamnese = ({ navigation }) => {
             numberOfLines={6}
             placeholder="Queixa Principal"
             onChangeText={(newQueixaPrincipal) => setQueixaPrincipal(newQueixaPrincipal)}
-            defaultValue={queixaPrincipal}
+            defaultValue={dadosConsulta.queixaPrincipal}
           />
 
           <Text>Interrogatório:</Text>
@@ -124,9 +140,9 @@ export default DescricaoAnamnese = ({ navigation }) => {
             numberOfLines={6}
             placeholder="Interrogatório"
             onChangeText={(newInterrogatorio) =>
-              setInterrogatorio(newInterrogatorio)
+            setInterrogatorio(newInterrogatorio)
             }
-            defaultValue={interrogatorio}
+            defaultValue={dadosConsulta.interrogatorio}
           />
 
           <Text for="localizacaoDoenca">Localização da Doença:</Text>
@@ -136,7 +152,7 @@ export default DescricaoAnamnese = ({ navigation }) => {
             id="localizacaoDoenca"
             placeholder="Localização da Doença"
             onChangeText={(newLocalizacaoDoenca) => setLocalizacaoDoenca(newLocalizacaoDoenca)}
-            defaultValue={localizacaoDoenca}
+            defaultValue={dadosConsulta.localizacaoDoenca}
           />
 
           <Text for="naturezaDoenca">Natureza da Doença:</Text>
@@ -148,7 +164,7 @@ export default DescricaoAnamnese = ({ navigation }) => {
             onChangeText={(newNaturezaDoenca) =>
               setNaturezaDoenca(newNaturezaDoenca)
             }
-            defaultValue={naturezaDoenca}
+            defaultValue={dadosConsulta.naturezaDoenca}
           />
 
           <Text>Bian Zhen(Síndrome):</Text>
@@ -158,7 +174,7 @@ export default DescricaoAnamnese = ({ navigation }) => {
             numberOfLines={3}
             placeholder="Síndrome"
             onChangeText={(newSindrome) => setSindrome(newSindrome)}
-            defaultValue={sindrome}
+            defaultValue={dadosConsulta.sindrome}
           />
 
           <Text>Lun Zhi(Princípio Terapêutico)</Text>
@@ -168,7 +184,7 @@ export default DescricaoAnamnese = ({ navigation }) => {
             numberOfLines={3}
             placeholder="Princípio Terapêutico"
             onChangeText={(newPrincipioTerapeutico) => setPrincipioTerapeutico(newPrincipioTerapeutico)}
-            defaultValue={principioTerapeutico}
+            defaultValue={dadosConsulta.principioTerapeutico}
           />
 
           <Text>Prescrição</Text>
@@ -178,7 +194,7 @@ export default DescricaoAnamnese = ({ navigation }) => {
             numberOfLines={3}
             placeholder="Prescrição"
             onChangeText={(newPrescricao) => setPrescricao(newPrescricao)}
-            defaultValue={prescricao}
+            defaultValue={dadosConsulta.prescricao}
           />
 
           <Text>Cirurgia</Text>
@@ -188,7 +204,7 @@ export default DescricaoAnamnese = ({ navigation }) => {
             numberOfLines={3}
             placeholder="Cirurgia"
             onChangeText={(newCirurgia) => setCirurgia(newCirurgia)}
-            defaultValue={cirurgia}
+            defaultValue={dadosConsulta.cirurgia}
           />
 
           <Text>Medicação em uso:</Text>
@@ -198,7 +214,7 @@ export default DescricaoAnamnese = ({ navigation }) => {
             numberOfLines={3}
             placeholder="Medicação em uso"
             onChangeText={(newMedicacaoUso) => setMedicacaoUso(newMedicacaoUso)}
-            defaultValue={medicacaoUso}
+            defaultValue={dadosConsulta.medicacaoUso}
           />
 
           <Text>Auriculo:</Text>
@@ -208,7 +224,7 @@ export default DescricaoAnamnese = ({ navigation }) => {
             numberOfLines={3}
             placeholder="Auriculo"
             onChangeText={(newAuriculo) => setAuriculo(newAuriculo)}
-            defaultValue={auriculo}
+            defaultValue={dadosConsulta.auriculo}
           />
 
           <Text for="pulsoDireito">Pulso Direito:</Text>
@@ -218,7 +234,7 @@ export default DescricaoAnamnese = ({ navigation }) => {
             id="pulsoDireito"
             placeholder="Pulso Direito"
             onChangeText={(newPulsoDireito) => setPulsoDireito(newPulsoDireito)}
-            defaultValue={pulsoDireito}
+            defaultValue={dadosConsulta.pulsoDireito}
           />
 
           <Text for="pulsoEsquerdo">PulsoEsquerdo:</Text>
@@ -230,7 +246,7 @@ export default DescricaoAnamnese = ({ navigation }) => {
             onChangeText={(newPulsoEsquerdo) =>
               setPulsoEsquerdo(newPulsoEsquerdo)
             }
-            defaultValue={pulsoEsquerdo}
+            defaultValue={dadosConsulta.pulsoEsquerdo}
           />
 
           <Text>Língua:</Text>
@@ -240,7 +256,7 @@ export default DescricaoAnamnese = ({ navigation }) => {
             numberOfLines={3}
             placeholder="Língua"
             onChangeText={(newLingua) => setLingua(newLingua)}
-            defaultValue={lingua}
+            defaultValue={dadosConsulta.lingua}
           />
 
           <Text>Etiopatogenia:</Text>
@@ -250,15 +266,15 @@ export default DescricaoAnamnese = ({ navigation }) => {
             numberOfLines={3}
             placeholder="Etiopatogenia"
             onChangeText={(newEtiopatogenia) => setEtiopatogenia(newEtiopatogenia)}
-            defaultValue={etiopatogenia}
+            defaultValue={dadosConsulta.etiopatogenia}
           />
 
           <View style={styles.buttonContainer}>
             <Pressable
               style={styles.button}
-              onPress={() => navigation.navigate("Cadastro")}
+              onPress={() => navigation.navigate("Welcome")}
             >
-              <Text>Voltar</Text>
+              <Text>Página Inicial</Text>
             </Pressable>
 
             {/* BOTÃO PARA SALVAR */}

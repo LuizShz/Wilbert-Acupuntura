@@ -1,45 +1,29 @@
 import * as React from "react";
 import {
   StyleSheet,
-  Image,
   Pressable,
   Text,
   View,
   ImageBackground,
 } from "react-native";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default Pacientes = ({ navigation }) => {
-  const listaDePacientes = [
-    {
-      nome: "Igor",
-      id: 1,
-    },
+  const [listaDePacientes, setListaDePacientes] = useState([]);
 
-    {
-      nome: "Karoline",
-      id: 2,
-    },
-
-    {
-      nome: "Luiz",
-      id: 3,
-    },
-
-    {
-      nome: "Duda",
-      id: 4,
-    },
-
-    {
-      nome: "Cristian",
-      id: 5,
-    },
-
-    {
-      nome: "Deusvaldo",
-      id: 6,
+  const fetchPost = async () => {
+    try {
+      let result = await axios.get("http://192.168.0.19:3000/pessoas");
+      setListaDePacientes(result.data);
+    } catch (error) {
+      console.error(error);
     }
-  ];
+  };
+
+  useEffect(() => {
+    fetchPost();
+  }, []);
 
   const listaAlfabetica = listaDePacientes.sort(function (a, b) {
     if (a.nome < b.nome) {
@@ -59,11 +43,11 @@ export default Pacientes = ({ navigation }) => {
     >
       <View style={styles.pageContainer}>
         <View style={styles.pacientes}>
-          {listaAlfabetica.map((paciente) => (
+          {listaAlfabetica.map((paciente, index) => (
             <Pressable
               style={styles.listaPacientes}
-              key={paciente.id}
-              onPress={() => navigation.navigate("Welcome")}
+              key={index}
+              onPress={() => navigation.navigate("DadosPaciente", {id: paciente._id})}
             >
               <Text style={styles.textPacientes}> {paciente.nome} </Text>
             </Pressable>
@@ -116,6 +100,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     height: "100%",
     marginHorizontal: 30,
+    overflow: "scroll"
   },
 
   pacientes: {
@@ -132,7 +117,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
 
   image: {

@@ -12,8 +12,13 @@ import {
 import { MaskedTextInput } from "react-native-mask-text";
 import { Picker } from "@react-native-picker/picker";
 import axios from "axios";
+import { useRoute } from "@react-navigation/native";
+import moment from "moment";
 
-export default Cadastro = ({ navigation }) => {
+export default EditarPaciente = ({ navigation }) => {
+
+  const route = useRoute();
+  const { id, dadosPaciente} = route.params;
 
   const [nome, setNome] = useState("");
   const [endereco, setEndereco] = useState("");
@@ -28,19 +33,19 @@ export default Cadastro = ({ navigation }) => {
 
   const handleSubmit = async () => {
     try {
-      await axios.post("http://192.168.0.19:3000/pessoas", {
-        nome,
-        endereco,
-        telefone,
-        genero,
-        estadoCivil,
-        profissao,
-        qtdFilhos,
-        dataNascimento,
-        idade,
-        consultas: [],
+      await axios.put(`http://192.168.0.19:3000/pessoas/${id}`, {
+        nome: !nome ? dadosPaciente.nome : nome,
+        endereco: !endereco ? dadosPaciente.endereco : endereco,
+        telefone: !telefone ? dadosPaciente.telefone : nome ,
+        genero: !genero ? dadosPaciente.genero : genero,
+        estadoCivil: !estadoCivil ? dadosPaciente.estadoCivil : estadoCivil,
+        profissao: !profissao ? dadosPaciente.profissao : profissao,
+        qtdFilhos: !qtdFilhos ? dadosPaciente.qtdFilhos : qtdFilhos,
+        dataNascimento: !dataNascimento ? dadosPaciente.dataNascimento : dataNascimento,
+        idade: !idade ? dadosPaciente.idade : idade,
+        consultas:[],
       });
-      alert("Paciente Cadastrado com Sucesso!");
+      alert("Paciente Editado com Sucesso!");
     } catch (error) {
       console.error(error);
     }
@@ -61,7 +66,7 @@ export default Cadastro = ({ navigation }) => {
             id="nome"
             placeholder="Nome Completo"
             onChangeText={(newNome) => setNome(newNome)}
-            defaultValue={nome}
+            defaultValue={dadosPaciente.nome}
           />
 
           <Text for="endereco">Endereço:</Text>
@@ -71,7 +76,7 @@ export default Cadastro = ({ navigation }) => {
             id="endereco"
             placeholder="Endereço Completo"
             onChangeText={(newEndereco) => setEndereco(newEndereco)}
-            defaultValue={endereco}
+            defaultValue={dadosPaciente.endereco}
           />
 
           <Text for="telefone">Telefone de Contato:</Text>
@@ -83,7 +88,7 @@ export default Cadastro = ({ navigation }) => {
             size="1%"
             placeholder="Telefone de Contato"
             onChangeText={(newTelefone) => setTelefone(newTelefone)}
-            defaultValue={telefone}
+            defaultValue={dadosPaciente.telefone}
           />
 
           <Text>Genero:</Text>
@@ -117,7 +122,7 @@ export default Cadastro = ({ navigation }) => {
             id="profissao"
             placeholder="Profissão"
             onChangeText={(newProfissao) => setProfissao(newProfissao)}
-            defaultValue={profissao}
+            defaultValue={dadosPaciente.profissao}
           />
 
           <Text>Filhos:</Text>
@@ -138,6 +143,7 @@ export default Cadastro = ({ navigation }) => {
             style={styles.input}
             mask="99/99/9999"
             placeholder="DD/MM/AAAA"
+            defaultValue={moment(dadosPaciente.dataNascimento).format("DD/MM/YYYY")}
             onChangeText={(text, rawText) => {
             setDataNascimento(text);
             }}
@@ -150,15 +156,20 @@ export default Cadastro = ({ navigation }) => {
             id="idade"
             placeholder="Idade"
             onChangeText={(newIdade) => setIdade(newIdade)}
-            defaultValue={idade}
+            defaultValue={dadosPaciente.idade}
           />
 
           <View style={styles.buttonContainer}>
             <Pressable
               style={styles.button}
-              onPress={() => navigation.navigate("Welcome")}
-            >
+              onPress={() => navigation.navigate("Welcome")}>
               <Text>Página Inicial</Text>
+            </Pressable>
+
+            <Pressable
+              style={styles.button}
+              onPress={() => navigation.navigate("EditarFichaAnamnese", {id})}>
+              <Text>Editar Ficha</Text>
             </Pressable>
 
             <Pressable

@@ -1,43 +1,42 @@
-import mongoose from 'mongoose';
-import moment from 'moment';
+import mongoose from "mongoose";
 
 const consultaSchema = new mongoose.Schema({
   consultaId: { type: String },
-  dataConsulta: {
-    type: Date,
-    required: true,
-    get: (value) => moment(value).format('YYYY-MM-DD HH:mm:ss'),
-    set: (value) => moment(value, 'YYYY-MM-DD HH:mm:ss').toDate(),
-  },
+  dataConsulta: {  type: Date  },
+  horaConsulta: { type: String },
+  acunpuntura: { type: String },
   queixaPrincipal: { type: String },
   interrogatorio: { type: String },
+  localizacaoDoenca: { type: String },
+  naturezaDoenca: { type: String },
+  sindrome: { type: String },
+  principioTerapeutico: { type: String },
+  prescricao: { type: String },
   cirurgia: { type: String },
   medicacaoUso: { type: String },
   auriculo: { type: String },
   pulsoDireito: { type: String },
   pulsoEsquerdo: { type: String },
   lingua: { type: String },
-  localizacaoDoenca: { type: String },
-  naturezaDoenca: { type: String },
   etiopatogenia: { type: String },
-  sindrome: { type: String },
-  principioTerapeutico: { type: String },
-  prescicao: { type: String },
 });
 
 const pessoaSchema = new mongoose.Schema({
   id: { type: String },
   nome: { type: String, required: true },
-  genero: { type: String },
   endereco: { type: String },
+  telefone: { type: Number },
+  genero: { type: String },
+  estadoCivil: { type: String },
   profissao: { type: String },
-  filhos: { type: Boolean },
+  //   filhos: { type: Boolean }, colocado direto em qntd filhos
   qtdFilhos: { type: Number },
-  dataNascimento: { type: Date },
+  dataNascimento: {  type: Date },
+  idade: { type: String },
   primeiraSessao: { type: Boolean },
   consultas: [consultaSchema],
 });
 
-const Pessoa = mongoose.model('Pessoa', pessoaSchema);
+const Pessoa = mongoose.model("Pessoa", pessoaSchema);
 
 export default Pessoa;
