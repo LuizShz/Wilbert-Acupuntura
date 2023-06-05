@@ -15,7 +15,7 @@ export const AppStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: true }}>
-        <Stack.Screen name="Welcome" component={Welcome} options={{ title: 'Wilbert Acupuntura'}}/>
+        <Stack.Screen name="Welcome" component={Welcome} options={{ title: 'Tânia Wilbert Acupuntura'}}/>
 
         <Stack.Screen name="Cadastro" component={Cadastro} options={{ title: 'Cadastro Paciente'}} />
 

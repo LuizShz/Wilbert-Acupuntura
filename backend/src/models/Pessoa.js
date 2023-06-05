@@ -25,7 +25,7 @@ const pessoaSchema = new mongoose.Schema({
   id: { type: String },
   nome: { type: String, required: true },
   endereco: { type: String },
-  telefone: { type: Number },
+  telefone: { type: String},
   genero: { type: String },
   estadoCivil: { type: String },
   profissao: { type: String },

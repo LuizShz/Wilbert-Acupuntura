@@ -23,8 +23,8 @@ export default EditarFichaAnamnese = ({ navigation }) => {
   const [dadosConsulta, setDadosConsulta] = useState([]);
 
   const [dataConsulta, setDataConsulta] = useState("");
-  const [acunpuntura, setAcunpuntura] = useState("");
   const [horaConsulta, setHoraConsulta] = useState("");
+  const [acunpuntura, setAcunpuntura] = useState("");
   const [queixaPrincipal, setQueixaPrincipal] = useState("");
   const [interrogatorio, setInterrogatorio] = useState("");
   const [localizacaoDoenca, setLocalizacaoDoenca] = useState("");
@@ -42,7 +42,7 @@ export default EditarFichaAnamnese = ({ navigation }) => {
 
   const fetchPost = async () => {
     try {
-      let result = await axios.get(`http://192.168.0.19:3000/pessoas/${id}/consultas`);
+      let result = await axios.get(`http://192.168.1.6:3000/pessoas/${id}/consultas`);
       setDadosConsulta(result.data[0]);
     } catch (error) {
       console.error(error);
@@ -55,7 +55,7 @@ export default EditarFichaAnamnese = ({ navigation }) => {
   const handleSubmit = async ()  => {
     try{
       await axios.put(
-        `http://192.168.0.19:3000/pessoas/${id}/consultas/${idConsulta}`, {
+        `http://192.168.1.6:3000/pessoas/${id}/consultas/${dadosConsulta._id}`, {
           dataConsulta: !dataConsulta ? dadosConsulta.dataConsulta : dataConsulta,
           horaConsulta: !horaConsulta ? dadosConsulta.horaConsulta : horaConsulta,
           acunpuntura: !acunpuntura ? dadosConsulta.acunpuntura : acunpuntura,
@@ -75,6 +75,7 @@ export default EditarFichaAnamnese = ({ navigation }) => {
           etiopatogenia: !etiopatogenia ? dadosConsulta.etiopatogenia : etiopatogenia,
         },)
       alert("Ficha Editada com Sucesso!");
+      navigation.navigate("Pacientes");
     } 
     catch(error) {
       console.error(error);

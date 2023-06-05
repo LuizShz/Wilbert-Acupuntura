@@ -19,7 +19,7 @@ const Welcome = ({ navigation }) => {
     const fetchPost = async () =>{
       try{
       let result = await axios.get(
-        "http://192.168.0.19:3000/pessoas"
+        "http://192.168.1.6:3000/pessoas"
       )
       setListaDePacientes(result.data)
     } 

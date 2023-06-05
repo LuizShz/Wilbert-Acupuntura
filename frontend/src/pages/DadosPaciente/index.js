@@ -22,7 +22,7 @@ export default DadosPaciente = ({ navigation }) => {
 
   const fetchPost = async () => {
     try {
-      let result = await axios.get(`http://192.168.0.19:3000/pessoas/${id}`);
+      let result = await axios.get(`http://192.168.1.6:3000/pessoas/${id}`);
       setDadosPaciente(result.data);
     } catch (error) {
       console.error(error);
@@ -46,9 +46,9 @@ export default DadosPaciente = ({ navigation }) => {
           text: "SIM",
           onPress: async () => {
             try {
-              await axios.delete(`http://192.168.0.19:3000/pessoas/${id}`);
+              await axios.delete(`http://192.168.1.6:3000/pessoas/${id}`);
               alert(`${dadosPaciente.nome} EXCLUÍDO COM SUCESSO!!`);
-              navigation.navigate("Pacientes");
+              navigation.navigate("Welcome");
             } catch (error) {
               console.error(error);
             }
@@ -117,15 +117,15 @@ export default DadosPaciente = ({ navigation }) => {
 
             <View>
               {dadosPaciente.consultas?.map((consulta, index) => (
-                <View>
-                  <View key={index} style={styles.textContainer}>
+                <View key={index}>
+                  <View  style={styles.textContainer}>
                     <Text style={styles.title}>Data da Consulta: </Text>
                     <Text>
                       {moment(consulta.dataConsulta).format("DD/MM/YYYY")}
                     </Text>
                   </View>
 
-                  <View key={index} style={styles.textContainer}>
+                  <View style={styles.textContainer}>
                     <Text style={styles.title}>Hora da Consulta: </Text>
                     <Text> {consulta.horaConsulta} </Text>
                   </View>

@@ -40,7 +40,7 @@ export default DescricaoAnamnese = ({ navigation }) => {
   const handleSubmit = async ()  => {
     try{
       await axios.post(
-        `http://192.168.0.19:3000/pessoas/${id}/consultas`, {
+        `http://192.168.1.6:3000/pessoas/${id}/consultas`, {
           dataConsulta,
           horaConsulta,
           acunpuntura,
@@ -60,7 +60,8 @@ export default DescricaoAnamnese = ({ navigation }) => {
           etiopatogenia,
         },
       )
-      alert("Paciente Cadastrado com Sucesso!");
+      alert("Ficha Cadastrada com Sucesso!");
+      navigation.navigate("Pacientes");
     } 
     catch(error) {
       console.error(error);
@@ -256,9 +257,9 @@ export default DescricaoAnamnese = ({ navigation }) => {
           <View style={styles.buttonContainer}>
             <Pressable
               style={styles.button}
-              onPress={() => navigation.navigate("Cadastro")}
+              onPress={() => navigation.navigate("Pacientes")}
             >
-              <Text>Voltar</Text>
+              <Text>Pacientes</Text>
             </Pressable>
 
             {/* BOTÃO PARA SALVAR */}

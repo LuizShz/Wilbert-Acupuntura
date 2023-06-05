@@ -33,19 +33,19 @@ export default EditarPaciente = ({ navigation }) => {
 
   const handleSubmit = async () => {
     try {
-      await axios.put(`http://192.168.0.19:3000/pessoas/${id}`, {
+      await axios.put(`http://192.168.1.6:3000/pessoas/${id}`, {
         nome: !nome ? dadosPaciente.nome : nome,
         endereco: !endereco ? dadosPaciente.endereco : endereco,
-        telefone: !telefone ? dadosPaciente.telefone : nome ,
+        telefone: !telefone ? dadosPaciente.telefone : telefone ,
         genero: !genero ? dadosPaciente.genero : genero,
         estadoCivil: !estadoCivil ? dadosPaciente.estadoCivil : estadoCivil,
         profissao: !profissao ? dadosPaciente.profissao : profissao,
         qtdFilhos: !qtdFilhos ? dadosPaciente.qtdFilhos : qtdFilhos,
         dataNascimento: !dataNascimento ? dadosPaciente.dataNascimento : dataNascimento,
         idade: !idade ? dadosPaciente.idade : idade,
-        consultas:[],
       });
       alert("Paciente Editado com Sucesso!");
+      navigation.navigate("Pacientes");
     } catch (error) {
       console.error(error);
     }

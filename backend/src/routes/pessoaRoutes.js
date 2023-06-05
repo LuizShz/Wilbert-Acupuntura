@@ -10,7 +10,7 @@ router
     .get("/pessoas/dashboard", PessoaController.registrosDashboard)
     .get("/pessoas/:id", PessoaController.listarPessoaId)
     .get("/pessoas/:id/consultas", ConsultaController.listarConsultas)
-    .get("/pessoas/:id/consultas/:consultaId ", ConsultaController.listarConsultasId)
+    .get("/pessoas/:id/consultas/:consultaId", ConsultaController.listarConsultasId)
     .get("/pessoas/pesquisa/:nome", PessoaController.listarPessoaNome)
     .post("/pessoas", PessoaController.cadastrarPessoa)
     .post("/pessoas/:id/consultas", ConsultaController.cadastrarConsulta)

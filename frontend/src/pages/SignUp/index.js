@@ -28,7 +28,7 @@ export default Cadastro = ({ navigation }) => {
 
   const handleSubmit = async () => {
     try {
-      await axios.post("http://192.168.0.19:3000/pessoas", {
+      await axios.post("http://192.168.1.6:3000/pessoas", {
         nome,
         endereco,
         telefone,
@@ -41,6 +41,7 @@ export default Cadastro = ({ navigation }) => {
         consultas: [],
       });
       alert("Paciente Cadastrado com Sucesso!");
+      navigation.navigate("Welcome");
     } catch (error) {
       console.error(error);
     }
